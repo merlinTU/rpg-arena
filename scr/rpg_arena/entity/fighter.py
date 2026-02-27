@@ -1,7 +1,7 @@
 from .class_enitity import Class
 import numpy as np
 
-class Player:
+class Fighter:
     def __init__(self, name: str, player_class: Class):
         self.name = name
         self.player_class = player_class
