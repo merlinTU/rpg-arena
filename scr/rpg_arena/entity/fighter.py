@@ -2,8 +2,8 @@ from .class_enitity import Class
 import numpy as np
 
 class Fighter:
-    def __init__(self, name: str, player_class: Class):
-        self.name = name
+    def __init__(self,  player_class: Class):
+        self.name = None
         self.player_class = player_class
         self.level = 1
 
