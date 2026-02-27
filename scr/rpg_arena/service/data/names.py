@@ -12,3 +12,22 @@ fighter_names = [
     "Ragnarok", "Zephyr", "Celandine", "Dusk", "Aurelius", "Mirella", "Jovian",
     "Sylph", "Cassian", "Thessaly", "Nymeria", "Odin", "Elysium", "Kaelis", "Seren"
 ]
+
+enemy_names = [
+    "Guntar", "Borg", "Hulm", "Dargo", "Morth", "Jarne", "Varg", "Bodo", "Kuno",
+    "Grimm", "Hilda", "Bruna", "Fenja", "Helma", "Suna", "Kara", "Ylva", "Runa",
+    "Tilda", "Juna", "Krag", "Thokk", "Grom", "Murk", "Ursa", "Grish", "Dran",
+    "Zog", "Lump", "Kort", "Borin", "Hark", "Skar", "Biff", "Mug", "Grog",
+    "Brutus", "Ratz", "Klotz", "Dorn", "Ironjaw", "Scar", "Thorn", "Grit",
+    "Ash", "Dust", "Rust", "Bone", "Fang", "Hook", "Blade", "Maul", "Basher",
+    "Crusher", "Smasher", "Hacker", "Ripper", "Gnasher", "Retch", "Slag",
+    "Muck", "Vera", "Mara", "Jara", "Zora", "Kira", "Lana", "Nura", "Oskar",
+    "Wulf", "Falk", "Hagen", "Arne", "Sven", "Bjorn", "Erik", "Lars", "Nils",
+    "Piet", "Marten", "Jesper", "Thore", "Gorm", "Stig", "Jarl", "Rolf",
+    "Arvid", "Leif", "Finn", "Bent", "Enno", "Bosse", "Thora", "Astrid",
+    "Svea", "Ronja", "Inga", "Alva", "Milla", "Lotte", "Gesa", "Senta",
+    "Edda", "Frida", "Ruth", "Magda", "Uta", "Irma", "Gerda", "Helga",
+    "Gully", "Rat", "Crow", "Snake", "Viper", "Bull", "Boar", "Ram", "Stump",
+    "Spike", "Grip", "Knuckles", "Butcher", "Cleaver", "Sledge", "Anvil", "Flint",
+    "Coal", "Grim", "Bane", "Dirge", "Knell", "Mord", "Gnash", "Vile", "Grot"
+]

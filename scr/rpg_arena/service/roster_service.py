@@ -1,6 +1,6 @@
 from rpg_arena.entity.unit_class import UnitClass
 from rpg_arena.entity.fighter import Fighter
-from rpg_arena.service.data.names import fighter_names
+from rpg_arena.service.data.names import fighter_names, enemy_names
 from rpg_arena.service.data.weapon_data import WEAPONS, CLASS_WEAPON_MAP
 import random
 
@@ -51,8 +51,10 @@ class RosterService:
 
     def generate_enemy_units(self):
         units = [self.generate_random_unit(is_enemy=True) for _ in range(3)]
+        names = random.sample(fighter_names, 3)
         for i in range(0,3):
             self.level_enemy_unit(units[i], i)
+            units[i].name = names[i]
         return units
 
     def level_enemy_unit(self, unit: Fighter, strength: int):
