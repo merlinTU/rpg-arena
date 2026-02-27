@@ -52,9 +52,15 @@ class RosterService:
             case 1:
                 level = round(random.uniform(1, round_))
                 unit.level_enemy(level)
+                base_gold = round_ * 100
+                unit.gold = max(50, int(base_gold  + random.normalvariate(0, base_gold * 0.1)))
             case 2:
                 level = round(random.uniform(round_, round_ + 2))
                 unit.level_enemy(level)
+                base_gold = round_ * 250
+                unit.gold = max(250, int(base_gold + random.normalvariate(0, base_gold * 0.05)))
             case 3:
                 level = round(random.uniform(round_ + 2, round_ + 4))
                 unit.level_enemy(level)
+                base_gold = round_ * 500
+                unit.gold = max(50, int(base_gold + random.normalvariate(0, base_gold * 0.1)))
