@@ -2,6 +2,6 @@ from enum import Enum, auto
 
 class WeaponType(Enum):
     SWORD = auto()
-    LANCE = auto()
+    AXE = auto()
     BOW = auto()
-    BOOK = auto()
+    MAGIC = auto()

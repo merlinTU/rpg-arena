@@ -1,12 +1,12 @@
 from rpg_arena.entity.unit_class import UnitClass
 from rpg_arena.entity.fighter import Fighter
 from rpg_arena.service.data.names import fighter_names
+from rpg_arena.service.data.weapon_data import WEAPONS, CLASS_WEAPON_MAP
 import random
 
 class RosterService:
     def __init__(self, root_service: "RootService"):
         self.root_service = root_service
-
 
     def modify_unit_values(self, unit: "Fighter", is_enemy: bool):
         for attr, value in vars(unit.player_class).items():
@@ -29,8 +29,18 @@ class RosterService:
         random_class = random.choice(list(UnitClass))
         new_fighter = Fighter(random_class)
         new_fighter = self.modify_unit_values(new_fighter, is_enemy)
+        new_fighter.weapons.append(self.random_weapon(random_class))
 
         return new_fighter
+
+    def random_weapon(self, unit_class: "Class"):
+        allowed_types = CLASS_WEAPON_MAP[unit_class]
+
+        possible_weapons = [
+            w for w in WEAPONS.values() if w.weapon_type in allowed_types
+        ]
+
+        return random.choice(possible_weapons)
 
     def generate_initial_units(self):
         units = [self.generate_random_unit(is_enemy= False) for _ in range(5)]

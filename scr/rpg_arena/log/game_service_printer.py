@@ -41,11 +41,13 @@ class GameServicePrinter():
             f"Spd: {unit.speed} / "
             f"Luck: {unit.luck} / "
             f"Def: {unit.defense} / "
-            f"Res: {unit.res}"
+            f"Res: {unit.res} / "
+            f"Weapon: {unit.weapons[0].name} / "
             )
         else:
             stats = (
                 f"Lv: {unit.level} / "
                 f"Gold: {unit.gold} / "
+                f"Weapon: {unit.weapons[0].name} / "
             )
         print(f"{unit.name} ({unit.player_class.value}): {stats}")
