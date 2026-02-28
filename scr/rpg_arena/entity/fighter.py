@@ -53,3 +53,17 @@ class Fighter:
         self.luck = int(self.luck)
         self.defense = int(self.defense)
         self.res_growth = int(self.res_growth)
+
+    def calc_hit(self):
+        weapon_hit = self.weapons[0].accuracy
+        return weapon_hit + self.skill * 2 + self.luck * 0.5
+
+    def calc_avoid(self):
+        return self.speed *  2 + self.luck
+
+    def calc_crit(self):
+        weapon_crit = self.weapons[0].crit
+        return weapon_crit + self.skill * 0.5
+
+    def calc_crit_avoid(self):
+        return self.luck
