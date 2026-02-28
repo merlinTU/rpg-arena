@@ -43,16 +43,16 @@ class ArenaService:
             # next fighters turn
             attacker, defender = defender, attacker
 
-        self.printer.print_after_arena_simulation()
-
-
-
-
+        winner = player_unit if player_unit.hp > 0 else enemy_unit
+        loser = enemy_unit if player_unit.hp > 0 else player_unit
+        self.printer.print_after_arena_simulation(winner, loser)
 
     def make_arena_round(self, first_unit: "Fighter", second_unit: "Fighter"):
-        self.make_attack(first_unit, second_unit)
+        self.printer.print_at_start_round(first_unit)
+
+        self.make_attack(first_unit, second_unit, 1)
         if second_unit.hp > 0:
-            self.make_attack(second_unit, first_unit)
+            self.make_attack(second_unit, first_unit, 3)
         else:
             return -1
 
@@ -60,20 +60,19 @@ class ArenaService:
             return -1
 
         if first_unit.speed > second_unit.speed + 5:
-            self.make_attack(first_unit, second_unit)
+            self.make_attack(first_unit, second_unit, 2)
         elif second_unit.speed > first_unit.speed + 5:
-            self.make_attack(second_unit, first_unit)
+            self.make_attack(second_unit, first_unit, 2)
 
         if first_unit.hp == 0 or second_unit.hp == 0:
             return -1
-        else:
-            return 1
 
+        self.printer.print_after_start_round(first_unit, second_unit)
+        return 1
 
-    def make_attack(self, attacker: "Fighter", defender: "Fighter"):
+    def make_attack(self, attacker: "Fighter", defender: "Fighter", status: int):
         hit_chance = self.caluclate_hit_chance(attacker, defender)
         damage = self.calculate_damage(attacker, defender)
-        print(hit_chance)
         has_hit = random.random() < hit_chance
 
         if not has_hit:
@@ -86,7 +85,8 @@ class ArenaService:
             damage *= 3
 
         defender.hp -= damage
+        defender.hp = max(0, defender.hp)
         attacker.weapons[0].uses -= 1
 
-        self.printer.print_after_make_attack(attacker, defender, has_hit, has_crit, damage)
+        self.printer.print_after_make_attack(attacker, defender, has_hit, has_crit, damage, status)
 
