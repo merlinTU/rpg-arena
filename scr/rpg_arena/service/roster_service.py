@@ -29,7 +29,7 @@ class RosterService:
         random_class = random.choice(list(UnitClass))
         new_fighter = Fighter(random_class)
         new_fighter = self.modify_unit_values(new_fighter, is_enemy)
-        new_fighter.weapons.append(self.random_weapon(random_class))
+        new_fighter.items.append(self.random_weapon(random_class))
 
         return new_fighter
 

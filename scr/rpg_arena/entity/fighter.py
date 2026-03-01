@@ -12,6 +12,7 @@ class Fighter:
 
         stats = CLASS_DATA[player_class]
 
+        self.max_hp = stats.base_hp
         self.hp = stats.base_hp
         self.strength = stats.base_str
         self.magic = stats.base_magic
@@ -30,8 +31,9 @@ class Fighter:
         self.defense_growth = stats.growth_defense
         self.res_growth = stats.growth_res
 
-        self.gold =0
-        self.weapons = []
+        self.equipped_weapon = None
+        self.gold = 0
+        self.items = []
 
     def level_enemy(self, level: int):
         for _ in range(level):
@@ -55,14 +57,14 @@ class Fighter:
         self.res = int(self.res_growth)
 
     def calc_hit(self):
-        weapon_hit = self.weapons[0].accuracy
+        weapon_hit = self.items[0].accuracy
         return weapon_hit + self.skill * 2 + self.luck * 0.5
 
     def calc_avoid(self):
         return self.speed *  2 + self.luck
 
     def calc_crit(self):
-        weapon_crit = self.weapons[0].crit
+        weapon_crit = self.items[0].crit
         return weapon_crit + self.skill * 0.5
 
     def calc_crit_avoid(self):

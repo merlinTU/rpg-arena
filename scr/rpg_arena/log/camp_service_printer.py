@@ -28,8 +28,8 @@ class CampServicePrinter:
         print("\n--- Equipped / Inventory ---")
         time.sleep(1)
 
-        if player.weapons:
-            for index, weapon in enumerate(player.weapons, start=1):
+        if player.items:
+            for index, weapon in enumerate(player.items, start=1):
                 print(f"{index}) {weapon}")
         else:
             print("No weapons in inventory.")

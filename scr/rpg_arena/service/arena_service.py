@@ -19,7 +19,7 @@ class ArenaService:
         return crit_chance / 100
 
     def calculate_damage(self, attacker: "Fighter", defender: "Fighter"):
-        weapon = attacker.weapons[0]
+        weapon = attacker.items[0]
         if weapon.weapon_type == WeaponType.MAGIC:
             return max(0, weapon.strength + attacker.magic - defender.res)
         else:
@@ -90,7 +90,7 @@ class ArenaService:
 
         defender.hp -= damage
         defender.hp = max(0, defender.hp)
-        attacker.weapons[0].uses -= 1
+        attacker.items[0].uses -= 1
 
         self.printer.print_after_make_attack(attacker, defender, has_hit, has_crit, damage, status)
 
