@@ -73,9 +73,11 @@ class ArenaService:
     def make_attack(self, attacker: "Fighter", defender: "Fighter", status: int):
         hit_chance = self.caluclate_hit_chance(attacker, defender)
         damage = self.calculate_damage(attacker, defender)
-        has_hit = random.random() < hit_chance
+        rand_no = random.random()
+        has_hit = rand_no < hit_chance
 
         if not has_hit:
+            self.printer.print_after_make_attack(attacker, defender, has_hit, False, damage, status)
             return
 
         crit_chance = self.caluclate_crit_chance(attacker, defender)
