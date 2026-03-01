@@ -1,3 +1,4 @@
+import time
 
 class CampServicePrinter:
     def __init__(self, root_service: "RootService"):
@@ -16,14 +17,36 @@ class CampServicePrinter:
 
     def print_at_open_item_manager(self):
         player = self.root_service.current_game.player
+        convoy = self.root_service.current_game.convoy
 
-        print("\n====== Your Weapons ======")
+        print("\n========================================")
+        print("            ITEM MANAGEMENT")
+        print("========================================")
+        time.sleep(1)
 
-        if not player.weapons:
-            print("You do not own any weapons.")
-            return
+        # --- Player Weapons ---
+        print("\n--- Equipped / Inventory ---")
+        time.sleep(1)
 
-        for index, weapon in enumerate(player.weapons, start=1):
-            print(f"{index}) {weapon}")
+        if player.weapons:
+            for index, weapon in enumerate(player.weapons, start=1):
+                print(f"{index}) {weapon}")
+        else:
+            print("No weapons in inventory.")
 
-        print("==========================\n")
+        # --- Convoy Weapons ---
+        print("\n--- Convoy Storage ---")
+        time.sleep(1)
+
+        if convoy:
+            for index, weapon in enumerate(convoy, start=1):
+                print(f"{index}) {weapon}")
+        else:
+            print("Convoy is empty.")
+
+        print("\n----------------------------------------")
+        print("What would you like to do?")
+        print("1) Send item to convoy")
+        print("2) Discard item")
+        print("3) Leave item manager")
+        print("========================================\n")

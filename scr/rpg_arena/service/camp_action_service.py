@@ -29,3 +29,8 @@ class CampActionService:
                     return
                 case _:
                     print("Invalid option. Please choose between 1-4.")
+
+    def choose_item_manager_action(self):
+        while True:
+            choice = input(">> Choose an option: ")
+            break
