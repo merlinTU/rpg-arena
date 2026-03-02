@@ -32,6 +32,7 @@ class ArenaService:
 
             # next fighters turn
             attacker, defender = defender, attacker
+            self.printer.print_after_start_round(attacker, defender)
 
         winner = player_unit if player_unit.hp > 0 else enemy_unit
         loser = enemy_unit if player_unit.hp > 0 else player_unit
@@ -58,7 +59,6 @@ class ArenaService:
         if first_unit.hp == 0 or second_unit.hp == 0:
             return self.end_fight()
 
-        self.printer.print_after_start_round(first_unit, second_unit)
         return 1
 
     def end_fight(self):

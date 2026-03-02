@@ -53,7 +53,7 @@ class ArneaServicePrinter():
         else:
             print("        ENEMY TURN")
 
-        print("========================================\n")
+        print("========================================")
 
     def print_after_arena_simulation(self, winner, loser):
         print("Fight over")
@@ -78,18 +78,18 @@ class ArneaServicePrinter():
 
         print("\n========================================")
         print("           CHOOSE YOUR WEAPON")
-        print("========================================\n")
+        print("========================================")
 
         if not weapons:
             print("You have no weapons available!")
-            print("========================================\n")
+            print("========================================")
             return
 
         # Print numbered list of weapons
         for index, weapon in enumerate(weapons, start=1):
             print(f"{index}) {weapon}")
 
-        print("========================================\n")
+        print("========================================")
 
     def print_fight_preview(self):
         player_unit = self.root_service.current_game.player
@@ -111,21 +111,40 @@ class ArneaServicePrinter():
         print("           FIGHT PREVIEW")
         print("========================================")
 
-        player_info = f"1) {player_unit.name} | HP: {player_unit.hp} | Hit: {round(player_hit * 100)}% | " \
-                      f"Damage: {player_damage} | Crit: {round(player_crit * 100)}%"
+        name_width = 15  # feste Breite für Namen
+        hp_width = 5
+        stat_width = 6
+
+        player_info = (
+            f"1) {player_unit.name:<{name_width}} | "
+            f"HP: {player_unit.hp:>{hp_width}} | "
+            f"Hit: {round(player_hit * 100):>{stat_width}}% | "
+            f"Dmg: {player_damage:>{stat_width}} | "
+            f"Crit: {round(player_crit * 100):>{stat_width}}%"
+        )
+
         if player_double:
-            player_info += " x2"
+            player_info += "  x2"
+
         print(player_info)
 
-        enemy_info = f"2) {enemy_unit.name} | HP: {player_unit.hp} | Hit: {round(enemy_hit * 100)}% | " \
-                     f"Damage: {enemy_damage} | Crit: {round(enemy_crit * 100)}%"
+        enemy_info = (
+            f"2) {enemy_unit.name:<{name_width}} | "
+            f"HP: {enemy_unit.hp:>{hp_width}} | "
+            f"Hit: {round(enemy_hit * 100):>{stat_width}}% | "
+            f"Dmg: {enemy_damage:>{stat_width}} | "
+            f"Crit: {round(enemy_crit * 100):>{stat_width}}%"
+        )
+
         if enemy_double:
-            enemy_info += " x2"
+            enemy_info += "  x2"
+
         print(enemy_info)
 
-        print("========================================\n")
+        print("========================================")
 
     def print_after_print_fight_preview(self):
+        print("What do you want to do?")
         print("1) Attack")
         print("2) Choose another weapon")
         print("3) Cancel")
