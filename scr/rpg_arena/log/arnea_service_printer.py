@@ -198,3 +198,28 @@ class ArneaServicePrinter():
 
     def print_after_use_item(self, unit: "Fighter"):
         print(">", unit.name, "used item")
+
+    def print_at_end_fight(self, gold: int, exp: int):
+        print("========================================")
+        print("           BATTLE RESULTS")
+        print("========================================")
+        time.sleep(1)
+        print(f"You earned {gold} Gold.")
+        time.sleep(1)
+        print(f"You gained {exp} EXP.\n")
+        time.sleep(1)
+
+
+
+    def print_level_up(self, level_up_stats: list):
+
+        if level_up_stats:
+            print("LEVEL UP! The following stats increased:")
+            for stat in level_up_stats:
+                print(f" - {stat} +1")
+        else:
+            print("No level up this time.")
+
+        time.sleep(1)
+
+

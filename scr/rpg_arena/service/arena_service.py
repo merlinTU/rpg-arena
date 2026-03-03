@@ -42,6 +42,25 @@ class ArenaService:
         self.printer.print_after_arena_simulation(winner, loser)
 
         if winner == player_unit:
+            # give player enemy gold:
+            player_unit.gold += enemy_unit.gold
+
+            # reset player unit hp
+            player_unit.hp = player_unit.max_hp
+
+            # give player unit exp
+            player_unit.exp += enemy_unit.exp
+
+            self.continue_fight = True
+            self.root_service.current_game.round += 1
+
+            self.printer.print_at_end_fight(player_unit.gold, player_unit.exp)
+
+            while player_unit.exp >= 100:
+                player_unit.exp = 100 - player_unit.exp
+                level_up_stats = player_unit.level_up()
+                self.printer.print_level_up(level_up_stats)
+
             self.root_service.camp_service.open_camp()
         else:
             return

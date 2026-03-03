@@ -1,5 +1,5 @@
 from .unit_class import UnitClass
-import numpy as np
+import random
 
 from ..service.data.class_data import CLASS_DATA
 
@@ -33,6 +33,7 @@ class Fighter:
 
         self.equipped_weapon = None
         self.gold = 0
+        self.exp = 0
         self.items = []
 
     def level_enemy(self, level: int):
@@ -55,6 +56,34 @@ class Fighter:
         self.luck = int(self.luck)
         self.defense = int(self.defense)
         self.res = int(self.res_growth)
+
+    def level_up(self):
+        """
+        Level up the character: For each stat, roll against the growth rate.
+        If successful, increase the stat by 1.
+        Returns a list of stats that were increased.
+        """
+        increased_stats = []
+        stats = [
+            ("HP", "hp", "hp_growth"),
+            ("Strength", "strength", "strength_growth"),
+            ("Magic", "magic", "magic_growth"),
+            ("Skill", "skill", "skill_growth"),
+            ("Speed", "speed", "speed_growth"),
+            ("Luck", "luck", "luck_growth"),
+            ("Defense", "defense", "defense_growth"),
+            ("Res", "res", "res_growth")
+        ]
+
+        for display_name, attr_name, growth_attr in stats:
+            growth_chance = getattr(self, growth_attr)
+
+            if random.random() < growth_chance:
+                current_value = getattr(self, attr_name)
+                setattr(self, attr_name, current_value + 1)
+                increased_stats.append(display_name)
+
+        return increased_stats
 
     def calc_hit(self):
         weapon_hit = self.items[0].accuracy

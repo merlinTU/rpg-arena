@@ -89,7 +89,6 @@ class RosterService:
 
     def generate_enemy_units(self):
         units = [self.generate_random_unit(is_enemy=True) for _ in range(3)]
-        names = random.sample(fighter_names, 3)
         for i in range(0,3):
             self.level_enemy_unit(units[i], i)
             units[i].name = "Gladiator"
@@ -104,13 +103,16 @@ class RosterService:
                 unit.level_enemy(level)
                 base_gold = round_ * 100
                 unit.gold = max(50, int(base_gold  + random.normalvariate(0, base_gold * 0.1)))
+                unit.exp = 50
             case 1:
                 level = round(random.uniform(round_, round_ + 2))
                 unit.level_enemy(level)
                 base_gold = round_ * 250
                 unit.gold = max(250, int(base_gold + random.normalvariate(0, base_gold * 0.05)))
+                unit.exp = 100
             case 2:
                 level = round(random.uniform(round_ + 2, round_ + 4))
                 unit.level_enemy(level)
                 base_gold = round_ * 500
                 unit.gold = max(500, int(base_gold + random.normalvariate(0, base_gold * 0.1)))
+                unit.exp = 150
