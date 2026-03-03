@@ -25,9 +25,12 @@ class GameServicePrinter():
         print("You chose: ", player_unit.name, "the ", player_unit.player_class.name)
 
     def print_after_start_frist_round(self, enemy_units):
-        print("=== You enter the Arena ===\n")
-        print("=== Infront of you stand 3 Gladiors ===\n")
+        print("========================================")
+        print("           THE ARENA AWAITS")
+        print("========================================")
 
+        print("Three gladiators stand before you.\n")
+        time.sleep(0.5)
         self.print_enemy_units(enemy_units)
         enemy_unit = self.root_service.player_action_service.choose_enemy(enemy_units)
         self.root_service.arena_service.start_arena(enemy_unit)
@@ -85,7 +88,7 @@ class GameServicePrinter():
         items_line = "Items:   " + ", ".join(item_names) if item_names else "Items: None"
         print(items_line)
 
-        time.sleep(2)
+        time.sleep(1)
         print("========================================")
 
     def print_enemy_stats(self, unit, number: int):
@@ -105,6 +108,6 @@ class GameServicePrinter():
         items_line = "Items:   " + ", ".join(item_names) if item_names else "Items: None"
         print(items_line)
 
-        time.sleep(2)
+        time.sleep(1)
         print("========================================")
 

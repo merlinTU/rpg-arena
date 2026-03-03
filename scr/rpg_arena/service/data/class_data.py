@@ -23,29 +23,32 @@ class ClassStats:
 
 CLASS_DATA = {
     UnitClass.MERCENARY: ClassStats(
-        base_hp=30, base_str=10, base_magic=0,
-        base_skill=8, base_speed=10, base_luck=5,
-        base_defense=6, base_res=2,
-        growth_hp=0.8, growth_str=0.35, growth_magic=0.1,
-        growth_skill=0.25, growth_speed=0.4,
-        growth_luck=0.5, growth_defense=0.45, growth_res=0.2
+        base_hp=5, base_str=3, base_magic=0,
+        base_skill=0, base_speed=0, base_luck=0,
+        base_defense=2, base_res=0,
+
+        growth_hp=0.10, growth_str=0.10, growth_magic=0,
+        growth_skill=0.10, growth_speed=0.10,
+        growth_luck=0.10, growth_defense=0.15, growth_res=0.05
     ),
 
     UnitClass.MAGE: ClassStats(
-        base_hp=25, base_str=4, base_magic=5,
-        base_skill=12, base_speed=8, base_luck=7,
-        base_defense=3, base_res=10,
-        growth_hp=0.5, growth_str=0.2, growth_magic=0.8,
-        growth_skill=0.6, growth_speed=0.5,
-        growth_luck=0.4, growth_defense=0.1, growth_res=0.7
+        base_hp=0, base_str=0, base_magic=5,
+        base_skill=0, base_speed=2, base_luck=0,
+        base_defense=0, base_res=5,
+
+        growth_hp=0.0, growth_str=0.0, growth_magic=0.25,
+        growth_skill=0.10, growth_speed=0.10,
+        growth_luck=0.05, growth_defense=0, growth_res=0.20
     ),
 
     UnitClass.FIGHTER: ClassStats(
-        base_hp=35, base_str=12, base_magic=0,
-        base_skill=5, base_speed=6, base_luck=4,
-        base_defense=5, base_res=3,
-        growth_hp=0.8, growth_str=0.6, growth_magic=0.05,
-        growth_skill=0.35, growth_speed=0.2,
-        growth_luck=0.15, growth_defense=0.35, growth_res=0.15
+        base_hp=10, base_str=5, base_magic=0,
+        base_skill=0, base_speed=0, base_luck=0,
+        base_defense=0, base_res=0,
+
+        growth_hp=0.25, growth_str=0.20, growth_magic=0.0,
+        growth_skill=0.05, growth_speed=0.1,
+        growth_luck=0.10, growth_defense=0.0, growth_res=0.0
     )
 }

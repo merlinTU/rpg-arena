@@ -9,21 +9,56 @@ class RosterService:
         self.root_service = root_service
 
     def modify_unit_values(self, unit: "Fighter", is_enemy: bool):
-        for attr, value in vars(unit.player_class).items():
-            # Base
-            if attr.startswith("base_") and isinstance(value, int):
-                delta = random.choice([-1, 0, 1])
-                setattr(unit.player_class, attr, value + delta)
-            # Growth
-            elif attr.startswith("growth_") and isinstance(value, (float, int)):
-                if is_enemy:
-                    delta = random.uniform(-0.1, 0)
-                else:
-                    delta = random.uniform(-0.05, 0.15)
-                new_value = max(0.0, min(1.0, value + delta))
-                setattr(unit.player_class, attr, new_value)
+
+        unit.hp += self.generate_unit_stat_value() + 15
+        unit.max_hp = unit.hp
+        unit.strength += self.generate_unit_stat_value()
+        unit.magic += self.generate_unit_stat_value()
+        unit.skill += self.generate_unit_stat_value()
+        unit.speed += self.generate_unit_stat_value()
+        unit.luck += self.generate_unit_stat_value()
+        unit.defense += self.generate_unit_stat_value()
+        unit.res += self.generate_unit_stat_value()
+
+        unit.hp_growth += self.generate_unit_growth_value()
+        unit.strength_growth += self.generate_unit_growth_value()
+        unit.magic_growth += self.generate_unit_growth_value()
+        unit.skill_growth += self.generate_unit_growth_value()
+        unit.speed_growth += self.generate_unit_growth_value()
+        unit.luck_growth += self.generate_unit_growth_value()
+        unit.defense_growth += self.generate_unit_growth_value()
+        unit.res_growth += self.generate_unit_growth_value()
 
         return unit
+
+    def generate_unit_growth_value(self):
+
+        # growths should be random between 0.05 and 0.5; but with a tendency to the center of 0.25
+        possible_growths = [i * 0.05 for i in range(1, 11)]
+
+        weights = []
+        for value in possible_growths:
+            distance = abs(value - 0.25)
+            weight = 1 / (1 + distance * 10)
+            weights.append(weight)
+
+        return random.choices(possible_growths, weights=weights, k=1)[0]
+
+    def generate_unit_stat_value(self):
+
+        # stats should be random between 0 and 15; but with a tendency to 5
+        possible_growths = [i * 0.05 for i in range(1, 11)]
+
+        possible_values = list(range(0, 16))  # 0 bis 15
+        weights = []
+        for value in possible_values:
+            # Abstand zur Mitte (5)
+            distance = abs(value - 5)
+
+            weight = 1 / (1 + distance)
+            weights.append(weight)
+
+        return random.choices(possible_values, weights=weights, k=1)[0]
 
     def generate_random_unit(self, is_enemy: bool):
         random_class = random.choice(list(UnitClass))

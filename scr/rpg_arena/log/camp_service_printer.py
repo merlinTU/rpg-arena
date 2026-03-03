@@ -7,7 +7,12 @@ class CampServicePrinter:
 
     def print_at_open_menu(self):
         print("\n======================================")
-        print("You return to the camp after the battle.")
+
+        if self.root_service.current_game.round == 1:
+            print("You enter the camp to prepare for your first battle")
+        else:
+            print("You return to the camp after the battle.")
+
         print("\nWhat will you do?")
         print("1) Enter the arena")
         print("2) Manage equipment")
