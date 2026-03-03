@@ -1,4 +1,3 @@
-from unittest import case
 
 
 class PlayerActionService:
@@ -7,13 +6,13 @@ class PlayerActionService:
 
     def choose_unit(self, initial_units):
         while True:
-            choice = input("Write your Fighter's name or number: ")
+            choice = input(">> Write your Fighter's name or number: ")
 
             if choice.isdigit():
-                index = int(choice)
+                index = int(choice) - 1
 
                 if 0 <= index < len(initial_units):
-                    player_unit = initial_units[index-1]
+                    player_unit = initial_units[index]
                     return player_unit
                 else:
                     print("Invalid number. Try again.")

@@ -34,11 +34,10 @@ class GameServicePrinter():
 
 
     def print_enemy_units(self, enemy_units):
-        i = 0
+        i = 1
         for unit in enemy_units:
-            self.print_unit_stats(unit, i,  is_not_enemy=False)
+            self.print_enemy_stats(unit, i)
             i += 1
-            time.sleep(2)
 
 
     def print_initial_units(self, initial_units):
@@ -47,7 +46,7 @@ class GameServicePrinter():
             self.print_unit_stats(unit, i + 1)
             i += 1
 
-    def print_unit_stats(self, unit, number: int, is_not_enemy=True):
+    def print_unit_stats(self, unit, number: int):
 
         name_width = 15
         print(f"{number}) {unit.name:<{name_width}} ({unit.player_class.value})")
@@ -55,7 +54,7 @@ class GameServicePrinter():
         # Stats
         stat_width = 6
         stats_line = (
-            "Stats: "
+            "Stats:   "
             f"HP: {unit.hp:>{stat_width}} | "
             f"STR: {unit.strength:>{stat_width}} | "
             f"MAG: {unit.magic:>{stat_width}} | "
@@ -69,7 +68,7 @@ class GameServicePrinter():
 
         # Growths
         growth_line = (
-            "Growth "
+            "Growths: "
             f"HP: {unit.hp_growth:>{stat_width}.2f} | "
             f"STR: {unit.strength_growth:>{stat_width}.2f} | "
             f"MAG: {unit.magic_growth:>{stat_width}.2f} | "
@@ -83,7 +82,29 @@ class GameServicePrinter():
 
         # Items
         item_names = [item.name for item in unit.items] if unit.items else []
-        items_line = "Items: " + ", ".join(item_names) if item_names else "Items: None"
+        items_line = "Items:   " + ", ".join(item_names) if item_names else "Items: None"
         print(items_line)
 
+        time.sleep(2)
         print("========================================")
+
+    def print_enemy_stats(self, unit, number: int):
+
+        name_width = 15
+        print(f"{number}) {unit.name:<{name_width}} ({unit.player_class.value})")
+
+        stat_width = 6
+        stats_line = (
+            f"LVL: {unit.level:>{stat_width}} | "
+            f"GOLD: {unit.gold:>{stat_width}}"
+        )
+        print(stats_line)
+
+
+        item_names = [item.name for item in unit.items] if unit.items else []
+        items_line = "Items:   " + ", ".join(item_names) if item_names else "Items: None"
+        print(items_line)
+
+        time.sleep(2)
+        print("========================================")
+
