@@ -13,6 +13,12 @@ class GameService:
         initial_units = self.root_service.roster_service.generate_initial_units()
         self.printer.print_after_start_game(initial_units)
 
-    def start_first_round(self):
+        player_unit = self.root_service.player_action_service.choose_unit(initial_units)
+        self.printer.print_after_choose_first_unit(player_unit)
+
+        self.root_service.current_game.player = player_unit
+        self.root_service.camp_service.open_camp()
+
+    def start_arena(self):
         enemy_units = self.root_service.roster_service.generate_enemy_units()
         self.printer.print_after_start_frist_round(enemy_units)

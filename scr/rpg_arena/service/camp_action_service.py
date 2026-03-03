@@ -16,7 +16,7 @@ class CampActionService:
 
             match choice:
                 case 1:
-                    self.root_service.game_service.start_first_round()
+                    self.root_service.game_service.start_arena()
                     break
                 case 2:
                     self.root_service.camp_service.open_item_manager()
