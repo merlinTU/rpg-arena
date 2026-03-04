@@ -21,7 +21,7 @@ class PlayerActionService:
                 index = self.search_unit_index(initial_units, choice)
 
                 if index != -1:
-                    player_unit = initial_units[index]
+                    player_unit = initial_units[index - 1]
                     return player_unit
                 else:
                     print("Name not found. Try again.")

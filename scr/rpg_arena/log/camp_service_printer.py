@@ -48,10 +48,11 @@ class CampServicePrinter:
                 print(f"{index}) {weapon}")
         else:
             print("Convoy is empty.")
-
+        time.sleep(1)
         print("\n----------------------------------------")
-        print("What would you like to do?")
-        print("1) Send item to convoy")
-        print("2) Discard item")
-        print("3) Leave item manager")
+        print("Commands:")
+        print(" send <no>   - Move item from Inventory to Convoy")
+        print(" take <no>   - Move item from Convoy to Inventory")
+        print(" use <no>    - Use item from Inventory")
+        print(" exit        - Leave menu")
         print("========================================\n")
