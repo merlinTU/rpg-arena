@@ -19,10 +19,12 @@ class HealingPotion(Item):
         return f"{line}"
 
     def use(self, player_unit, game):
-        if player_unit.health == player_unit.max_health:
+        if player_unit.hp == player_unit.max_hp:
             return -1
         else:
-            player_unit.health += self.heal_amount
+            player_unit.hp += self.heal_amount
+            player_unit.hp = min(player_unit.hp, player_unit.max_hp)
+
             self.uses -= 1
             if self.uses == 0:
                 player_unit.items.remove(self)

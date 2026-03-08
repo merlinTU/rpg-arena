@@ -111,41 +111,59 @@ class ArneaServicePrinter():
         player_double = player_unit.speed > enemy_unit.speed + 5
         enemy_double = enemy_unit.speed > player_unit.speed + 5
 
+        player_weapon_arrow = ""
+        enemy_weapon_arrow = ""
+        vantage_player = arena.check_weapon_vantage(player_unit.equipped_weapon, enemy_unit.equipped_weapon)
+        if vantage_player == 1:
+            player_weapon_arrow = " ↑"
+        elif vantage_player == 2:
+            player_weapon_arrow = " ↓"
+
+        vantage_enemy = arena.check_weapon_vantage(enemy_unit.equipped_weapon, player_unit.equipped_weapon)
+        if vantage_enemy == 1:
+            enemy_weapon_arrow = " ↑"
+        elif vantage_enemy == 2:
+            enemy_weapon_arrow = " ↓"
+
         print("\n========================================")
         print("           FIGHT PREVIEW")
         print("========================================")
 
-        name_width = 15  # feste Breite für Namen
+        name_width = 15
         hp_width = 5
         stat_width = 6
+        weapon_width = 15
 
+        # Player
+        player_weapon_str = f"{player_unit.equipped_weapon.name:<{weapon_width - 1}}{player_weapon_arrow:>1}"
         player_info = (
             f"1) {player_unit.name:<{name_width}} | "
+            f"{player_weapon_str} | "
             f"HP: {player_unit.hp:>{hp_width}} | "
             f"Hit: {round(player_hit * 100):>{stat_width}}% | "
             f"Dmg: {player_damage:>{stat_width}} | "
             f"Crit: {round(player_crit * 100):>{stat_width}}%"
         )
-
         if player_double:
             player_info += "  x2"
-
         print(player_info)
 
+        # Enemy
+        enemy_weapon_str = f"{enemy_unit.equipped_weapon.name:<{weapon_width - 1}}{enemy_weapon_arrow:>1}"
         enemy_info = (
             f"2) {enemy_unit.name:<{name_width}} | "
+            f"{enemy_weapon_str} | "
             f"HP: {enemy_unit.hp:>{hp_width}} | "
             f"Hit: {round(enemy_hit * 100):>{stat_width}}% | "
             f"Dmg: {enemy_damage:>{stat_width}} | "
             f"Crit: {round(enemy_crit * 100):>{stat_width}}%"
         )
-
         if enemy_double:
             enemy_info += "  x2"
-
         print(enemy_info)
 
         print("========================================")
+
 
     def print_after_print_fight_preview(self):
         print("What do you want to do?")
@@ -158,7 +176,8 @@ class ArneaServicePrinter():
         print("What do you want to do?")
         print("1) Attack")
         print("2) Check Inventory")
-        print("3) Surrender")
+        print("3) Wait")
+        print("4) Surrender")
         print("========================================\n")
 
     def print_inventory(self):
@@ -169,8 +188,8 @@ class ArneaServicePrinter():
         # mark equipped weapon
         if player_unit.equipped_weapon:
             print("Equipped Weapon:")
-            print(f"---- {player_unit.equipped_weapon}")
-            print("--------------------------------\n")
+            print(f"{player_unit.equipped_weapon}")
+            print("--------------------------------")
 
         # other items in inventory
         other_items = [item for item in player_unit.items if item != player_unit.equipped_weapon]
@@ -184,16 +203,16 @@ class ArneaServicePrinter():
         for index, item in enumerate(other_items, start=1):
             print(f"{index}) {item}")
 
-        print("============================\n")
+        print("============================")
 
         self.print_inventar_choice()
 
     def print_inventar_choice(self):
         time.sleep(1)
         print("What do you want to do?")
-        print("1) Equip Weapon")
-        print("2) Use Item")
-        print("3) Cancel")
+        print("equip <no>   - Equip weapon")
+        print("use <no>     - Use item")
+        print("exit")
         print("========================================\n")
 
     def print_after_use_item(self, unit: "Fighter"):
@@ -206,7 +225,7 @@ class ArneaServicePrinter():
         time.sleep(1)
         print(f"You earned {gold} Gold.")
         time.sleep(1)
-        print(f"You gained {exp} EXP.\n")
+        print(f"You gained {exp} EXP.")
         time.sleep(1)
 
 
@@ -222,4 +241,16 @@ class ArneaServicePrinter():
 
         time.sleep(1)
 
+    def print_after_surrender(self):
+        player_unit = self.root_service.current_game.player
+        print(">", player_unit.name, "surrendered.")
+
+        print("========================================")
+        print("           BATTLE RESULTS")
+        print("========================================")
+        time.sleep(1)
+        print(f"You earned 0 Gold.")
+        time.sleep(1)
+        print(f"You gained 0 EXP.")
+        time.sleep(1)
 

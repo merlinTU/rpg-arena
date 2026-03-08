@@ -36,13 +36,12 @@ class CampActionService:
         while True:
             choice = input(">> Command: ").strip().lower()
 
-            if choice == "exit":
+            if choice == "exit" or choice == "e":
                 self.root_service.camp_service.open_camp()
                 return
 
             parts = choice.split()
 
-            # Erwartet: Befehl + Nummer
             if len(parts) != 2:
                 print("Invalid command. Use: send <no>, take <no>, use <no>, exit")
                 continue

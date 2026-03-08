@@ -26,16 +26,27 @@ class ArenaService:
 
         self.printer.print_after_start_round(attacker, defender)
 
-        while self.continue_fight:
+        while self.continue_fight and self.continue_fight != "surrender":
             if attacker == player_unit:
                 self.action_service.make_player_round_decision()
             else:
                 self.action_service.make_enemy_round_decision()
 
             # next fighters turn
-            if self.continue_fight:
+            if self.continue_fight and not self.continue_fight == "surrender":
                 attacker, defender = defender, attacker
                 self.printer.print_after_start_round(attacker, defender)
+
+        if self.continue_fight == "surrender":
+            self.printer.print_after_surrender()
+            # reset player unit hp
+            player_unit.hp = player_unit.max_hp
+            self.root_service.current_game.round += 1
+            self.continue_fight = True
+
+            self.root_service.camp_service.open_camp()
+            return
+
 
         winner = player_unit if player_unit.hp > 0 else enemy_unit
         loser = enemy_unit if player_unit.hp > 0 else player_unit
@@ -54,10 +65,10 @@ class ArenaService:
             self.continue_fight = True
             self.root_service.current_game.round += 1
 
-            self.printer.print_at_end_fight(player_unit.gold, player_unit.exp)
+            self.printer.print_at_end_fight(enemy_unit.gold, enemy_unit.exp)
 
             while player_unit.exp >= 100:
-                player_unit.exp = 100 - player_unit.exp
+                player_unit.exp = player_unit.exp - 100
                 level_up_stats = player_unit.level_up()
                 self.printer.print_level_up(level_up_stats)
 

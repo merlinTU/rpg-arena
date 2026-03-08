@@ -26,14 +26,14 @@ class Weapon(Item):
         )
 
     def __str__(self):
-        name_width = 15
+        name_width = 20
         stat_width = 6
-        lines = []
-        lines.append("-" * 40)
-        lines.append(f"{self.name:<{name_width}} ({self.weapon_type.name})")
-        lines.append(
-            f"Stats: STR: {self.strength:>{stat_width}} | ACC: {self.accuracy:>{stat_width}} | "
-            f"CRIT: {self.crit:>{stat_width}} | WEIGHT: {self.weight:>{stat_width}} | USES: {self.uses:>{stat_width}}"
+
+        return (
+            f"{self.name:<{name_width}} | "
+            f"STR: {self.strength:>{stat_width}} | "
+            f"ACC: {self.accuracy:>{stat_width}} | "
+            f"CRIT: {self.crit:>{stat_width}} | "
+            f"WEIGHT: {self.weight:>{stat_width}} | "
+            f"USES: {self.uses:>{stat_width}}"
         )
-        lines.append("-" * 40)
-        return "\n".join(lines)

@@ -33,7 +33,7 @@ class PlayerActionService:
             if choice.isdigit():
                 index = int(choice)
 
-                if 0 <= index < len(enemy_units):
+                if 0 <= index <= len(enemy_units):
                     player_unit = enemy_units[index - 1]
                     return player_unit
                 else:

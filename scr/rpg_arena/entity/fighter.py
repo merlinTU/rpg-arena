@@ -81,6 +81,8 @@ class Fighter:
             if random.random() < growth_chance:
                 current_value = getattr(self, attr_name)
                 setattr(self, attr_name, current_value + 1)
+                if attr_name == "hp":
+                    setattr(self, "max_hp", current_value + 1)
                 increased_stats.append(display_name)
 
         return increased_stats

@@ -153,7 +153,7 @@ class RosterService:
     def generate_enemy_units(self):
         easy_enemy = self.generate_random_unit(2)
         normal_enemy = self.generate_random_unit(1)
-        hard_enemy =self.generate_random_unit(3)
+        hard_enemy = self.generate_random_unit(3)
 
         units = [easy_enemy, normal_enemy, hard_enemy]
         for i in range(0,3):

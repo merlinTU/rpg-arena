@@ -1,4 +1,7 @@
+import time
+
 from rpg_arena.entity import Weapon
+from rpg_arena.entity.healing_potion import HealingPotion
 from rpg_arena.log.arnea_service_printer import ArneaServicePrinter
 
 class ArenaActionService:
@@ -11,10 +14,10 @@ class ArenaActionService:
 
         while True:
 
-            choice = input(">> Choose an option (1-3): ")
+            choice = input(">> Choose an option (1-4): ")
 
-            if choice not in ("1", "2", "3"):
-                print("Invalid choice. Please enter 1, 2, or 3.")
+            if choice not in ("1", "2", "3", "4"):
+                print("Invalid choice. Please enter 1, 2, 3 or 4.")
             choice = int(choice)
 
             if choice == 1:
@@ -26,9 +29,14 @@ class ArenaActionService:
                 break
 
             elif choice == 3:
+                print(">", self.root_service.current_game.player.name, "waits")
+                break
+
+            elif choice == 4:
                 confirm = input(">> Are you sure you want to surrender? (y/n): ").lower()
                 if confirm == "y":
-                    return "surrender"
+                    self.root_service.arena_service.continue_fight = "surrender"
+                    break
                 else:
                     continue
 
@@ -58,8 +66,7 @@ class ArenaActionService:
                     break
 
                 case 2:
-                    self.printer.print_at_open_fight_menu()
-                    self.choose_weapon_to_equip()
+                    self.open_fight_menu()
                     break
 
                 case 3:
@@ -97,70 +104,58 @@ class ArenaActionService:
         self.root_service.arena_service.make_fight_round(enemy, player)
 
     def make_inventory_decision(self):
-        while True:
-
-            choice = input(">> Choose an option (1-3): ")
-
-            if choice not in ("1", "2", "3"):
-                print("Invalid choice. Please enter 1, 2, or 3.")
-            choice = int(choice)
-
-            match choice:
-                case 1:
-                    self.make_inventory_decision_equip_weapon()
-                    break
-
-                case 2:
-                    self.make_inventory_decision_use_item()
-                    break
-
-                case 3:
-                    self.make_player_round_decision()
-                    break
-
-    def make_inventory_decision_equip_weapon(self):
-            player = self.root_service.current_game.player
-            while True:
-                choice = input(">> Write the Item number you want to equip: ")
-
-                if not choice.isdigit():
-                    print("Invalid input. Please enter a number.")
-                choice = int(choice)
-
-                if choice < 1 or choice > len(self.root_service.current_game.player.items):
-                    print(f"Invalid input.")
-
-                if not isinstance(player.items[choice - 1], Weapon):
-                    print("You can't equip this item.")
-                    self.make_inventory_decision()
-                    break
-
-                else:
-                    player = self.root_service.current_game.player
-                    player.equipped_weapon = player.items[choice - 1]
-                    self.make_inventory_decision()
-                    break
-
-    def make_inventory_decision_use_item(self):
-        player = self.root_service.current_game.player
+        game = self.root_service.current_game
+        player = game.player
 
         while True:
-            choice = input(">> Write the Item number you want to use ")
+            choice = input(">> Command: ").strip().lower()
 
-            if not choice.isdigit():
-                print("Invalid input. Please enter a number.")
-            choice = int(choice)
+            parts = choice.split()
 
-            if choice < 1 or choice > len(self.root_service.current_game.player.items):
-                print(f"Invalid input.")
+            if choice == "exit" or choice == "e":
+                self.make_player_round_decision()
+                return
 
-            if not player.items[choice - 1].usable:
-                print("You can't use this item.")
-                self.make_inventory_decision()
-                break
 
-            else:
-                player = self.root_service.current_game.player
-                player.items[choice - 1].use(player)
-                self.printer.print.after_use_item(player)
-                break
+            if len(parts) != 2:
+                print("Invalid command. Use: send <no>, take <no>, use <no>, exit")
+                continue
+
+            command, number = parts
+
+            if not number.isdigit():
+                print("Invalid item number.")
+                continue
+
+            number = int(number)
+
+            if number > len(player.items):
+                print("Invalid item number.")
+                continue
+
+            match command:
+                case "equip":
+                    weapon = player.items[number - 1]
+                    if not isinstance(weapon, Weapon):
+                        print("You can't equip this item.")
+                        continue
+
+                    player.equipped_weapon = player.items[number - 1]
+                    print(player.name, "equipped, ", weapon.name)
+                    self.open_inventory()
+                    break
+
+                case "use":
+                    item = player.items[number]
+
+                    if not item.usable:
+                        print("Item not usable.")
+                        continue
+
+                    item.use(player, game)
+                    if isinstance(item, HealingPotion):
+                        print(">", player.name, "used", item.name, "and has ", player.hp, "now.")
+                    break
+
+                case _:
+                    print("Unknown command. Use send, take, use or exit.")
