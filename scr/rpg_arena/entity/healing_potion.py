@@ -6,19 +6,23 @@ class HealingPotion(Item):
         self.heal_amount = heal_amount
         self.uses = uses
 
-    def __str__(self):
+    def __str__(self, index = None):
         name_width = 20
-        value_width = 6
+        value_width = 5
+        index_str = f"{index}) " if index is not None else ""
+        name_width = name_width - len(index_str)
+
+        heal_str = f"{self.heal_amount} HP"
 
         line = (
-            f"{self.name:<{name_width}} | "
-            f"Uses: {self.uses:>{value_width}} | "
-            f"Heal: +{self.heal_amount:>{value_width}} HP"
+            f"{index_str}{self.name:<{name_width}} | "
+            f"Uses: {self.uses:<{value_width}} | "
+            f"Heal: {heal_str:<{value_width}} | "
         )
 
         return f"{line}"
 
-    def use(self, player_unit, game):
+    def use(self, player_unit, game, in_convoy = False):
         if player_unit.hp == player_unit.max_hp:
             return -1
         else:

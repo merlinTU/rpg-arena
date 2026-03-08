@@ -9,15 +9,18 @@ class StatBooster(Item):
         self.boost = boost
         self.uses = 1
 
-    def __str__(self):
+    def __str__(self, index = None):
         name_width = 20
-        value_width = 6
+        value_width = 5
+        index_str = f"{index}) " if index is not None else ""
+        name_width = name_width - len(index_str)
+
+        boost_str = f"{self.status} +{self.boost}"
 
         line = (
-            f"{self.name:<{name_width}} | "
+            f"{index_str}{self.name:<{name_width}} | "
             f"Uses: {self.uses:>{value_width}} | "
-            f"Boost: {self.status:<8} | "
-            f"+{self.boost:>{value_width}}"
+            f"{self.status:<8} +{self.boost:<1} | "
         )
 
         return f"{line}"
@@ -31,7 +34,7 @@ class StatBooster(Item):
             price=self.price
         )
 
-    def use(self, player_unit, game):
+    def use(self, player_unit, game, in_convoy = False):
 
         match self.status:
             case "HP":
@@ -67,7 +70,7 @@ class StatBooster(Item):
         if self.uses > 0:
             return
 
-        if self in player_unit.items:
+        if not in_convoy:
             player_unit.items.remove(self)
         else:
             game.convoy.remove(self)

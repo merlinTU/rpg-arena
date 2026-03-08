@@ -4,7 +4,7 @@ class Item:
         self.usable = usable
         self.price = price
 
-    def __str__(self):
+    def __str__(self, index = None):
         return f"{self.name}"
 
     def use(self, player_unit: "Fighter", game):

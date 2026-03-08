@@ -14,6 +14,3 @@ class CampService:
         self.printer.print_at_open_item_manager()
         self.root_service.camp_action_service.choose_item_manager_action()
         pass
-
-    def open_shop(self):
-        pass

@@ -1,5 +1,6 @@
 from rpg_arena.entity.game import Game
 from rpg_arena.log.game_service_printer import GameServicePrinter
+from rpg_arena.service.data.weapon_data import CLASS_WEAPON_MAP
 
 
 class GameService:
@@ -16,7 +17,12 @@ class GameService:
         player_unit = self.root_service.player_action_service.choose_unit(initial_units)
         self.printer.print_after_choose_first_unit(player_unit)
 
+        player_unit.gold = 9999
+
         self.root_service.current_game.player = player_unit
+
+        # set the initial weapons the player can buy in shop
+        self.root_service.current_game.player_weapons = CLASS_WEAPON_MAP[player_unit.player_class]
         self.root_service.camp_service.open_camp()
 
     def start_arena(self):

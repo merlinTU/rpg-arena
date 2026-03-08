@@ -25,15 +25,17 @@ class Weapon(Item):
             price=self.price
         )
 
-    def __str__(self):
+    def __str__(self, index = None):
         name_width = 20
         stat_width = 6
+        index_str = f"{index}) " if index is not None else ""
+        name_width = name_width - len(index_str)
 
         return (
-            f"{self.name:<{name_width}} | "
+            f"{index_str}{self.name:<{name_width}} | "
             f"STR: {self.strength:>{stat_width}} | "
             f"ACC: {self.accuracy:>{stat_width}} | "
             f"CRIT: {self.crit:>{stat_width}} | "
             f"WEIGHT: {self.weight:>{stat_width}} | "
-            f"USES: {self.uses:>{stat_width}}"
+            f"USES: {self.uses:>{stat_width}} |"
         )

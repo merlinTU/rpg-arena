@@ -21,7 +21,7 @@ class CampActionService:
                     self.root_service.camp_service.open_item_manager()
                     break
                 case 3:
-                    self.root_service.camp_service.open_shop()
+                    self.root_service.shop_service.open_shop()
                     break
                 case 4:
                     print("Leaving camp...")
@@ -72,15 +72,18 @@ class CampActionService:
 
                 case "use":
                     if number > len(player.items):
+                        number = number - len(player.items)
                         item = game.convoy[number - 1]
+                        in_convoy = True
                     else:
                         item = player.items[number - 1]
+                        in_convoy = False
 
                     if not item.usable:
                         print("Item not usable.")
                         continue
 
-                    item.use(player, game)
+                    item.use(player, game, in_convoy)
                     self.root_service.camp_service.open_item_manager()
                     break
 
