@@ -108,8 +108,8 @@ class ArneaServicePrinter():
         enemy_crit = arena.caluclate_crit_chance(enemy_unit, player_unit)
         enemy_damage = arena.calculate_damage(enemy_unit, player_unit)
 
-        player_double = player_unit.speed > enemy_unit.speed + 5
-        enemy_double = enemy_unit.speed > player_unit.speed + 5
+        player_double = player_unit.calc_corrected_speed() > enemy_unit.calc_corrected_speed() + 5
+        enemy_double = enemy_unit.calc_corrected_speed() > player_unit.calc_corrected_speed() + 5
 
         player_weapon_arrow = ""
         enemy_weapon_arrow = ""

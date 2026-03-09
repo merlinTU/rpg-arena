@@ -88,17 +88,22 @@ class Fighter:
         return increased_stats
 
     def calc_hit(self):
-        weapon_hit = self.items[0].accuracy
+        weapon_hit = self.equipped_weapon.accuracy
         return weapon_hit + self.skill * 2 + self.luck * 0.5
 
     def calc_avoid(self):
-        return self.speed *  2 + self.luck
+        return self.calc_corrected_speed()  *  2 + self.luck
 
     def calc_crit(self):
-        weapon_crit = self.items[0].crit
+        weapon_crit = self.equipped_weapon.crit
         return weapon_crit + self.skill * 0.5
 
     def calc_crit_avoid(self):
         return self.luck
+
+    def calc_corrected_speed(self):
+        cor_speed = self.speed - max(0, self.equipped_weapon.weight - self.strength)
+
+        return cor_speed
 
 

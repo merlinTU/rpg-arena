@@ -17,8 +17,6 @@ class GameService:
         player_unit = self.root_service.player_action_service.choose_unit(initial_units)
         self.printer.print_after_choose_first_unit(player_unit)
 
-        player_unit.gold = 9999
-
         self.root_service.current_game.player = player_unit
 
         # set the initial weapons the player can buy in shop

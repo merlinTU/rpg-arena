@@ -8,6 +8,9 @@ class CampActionService:
         while True:
             choice = input(">> Choose an option: ")
 
+            if self.root_service.information_service.check_information_service_call(choice):
+                continue
+
             if not choice.isdigit():
                 print("Invalid input. Please enter a number.")
                 continue
@@ -35,6 +38,9 @@ class CampActionService:
 
         while True:
             choice = input(">> Command: ").strip().lower()
+
+            if self.root_service.information_service.check_information_service_call(choice):
+                continue
 
             if choice == "exit" or choice == "e":
                 self.root_service.camp_service.open_camp()

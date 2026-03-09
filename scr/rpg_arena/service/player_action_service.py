@@ -8,6 +8,9 @@ class PlayerActionService:
         while True:
             choice = input(">> Write your Fighter's name or number: ")
 
+            if self.root_service.information_service.check_information_service_call(choice):
+                continue
+
             if choice.isdigit():
                 index = int(choice) - 1
 
@@ -29,6 +32,9 @@ class PlayerActionService:
     def choose_enemy(self, enemy_units):
         while True:
             choice = input("Write the number of the Warrior you want to fight: ")
+
+            if self.root_service.information_service.check_information_service_call(choice):
+                continue
 
             if choice.isdigit():
                 index = int(choice)

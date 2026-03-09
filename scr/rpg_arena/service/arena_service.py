@@ -87,9 +87,10 @@ class ArenaService:
         if first_unit.hp == 0:
             return self.end_fight()
 
-        if first_unit.speed > second_unit.speed + 5:
+        if first_unit.calc_corrected_speed() > second_unit.calc_corrected_speed() + 5:
             self.make_attack(first_unit, second_unit, 2)
-        elif second_unit.speed > first_unit.speed + 5:
+
+        elif second_unit.calc_corrected_speed() > first_unit.calc_corrected_speed() + 5:
             self.make_attack(second_unit, first_unit, 2)
 
         if first_unit.hp == 0 or second_unit.hp == 0:
@@ -118,7 +119,7 @@ class ArenaService:
 
         defender.hp -= damage
         defender.hp = max(0, defender.hp)
-        attacker.items[0].uses -= 1
+        attacker.equipped_weapon.uses -= 1
 
         self.printer.print_after_make_attack(attacker, defender, has_hit, has_crit, damage, status)
 
@@ -165,7 +166,7 @@ class ArenaService:
         return crit_chance / 100
 
     def calculate_damage(self, attacker: "Fighter", defender: "Fighter"):
-        weapon = attacker.items[0]
+        weapon = attacker.equipped_weapon
         if weapon.weapon_type == WeaponType.MAGIC:
             return max(0, weapon.strength + attacker.magic - defender.res)
         else:

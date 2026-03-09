@@ -6,9 +6,9 @@ from rpg_arena.entity.unit_class import UnitClass
 iron_sword = Weapon(
     name="Iron Sword",
     weapon_type=WeaponType.SWORD,
-    strength=8,
+    strength=4,
     accuracy=100,
-    uses=40,
+    uses=15,
     crit=5,
     weight=5,
     price=100
@@ -17,10 +17,10 @@ iron_sword = Weapon(
 iron_axe = Weapon(
     name="Iron Axe",
     weapon_type=WeaponType.AXE,
-    strength=12,
+    strength=8,
     accuracy=85,
-    uses=35,
-    crit=5,
+    uses=15,
+    crit=0,
     weight=7,
     price=120
 )
@@ -28,9 +28,9 @@ iron_axe = Weapon(
 iron_bow = Weapon(
     name="Iron Bow",
     weapon_type=WeaponType.BOW,
-    strength=7,
+    strength=3,
     accuracy=115,
-    uses=30,
+    uses=15,
     crit=5,
     weight=4,
     price=90
@@ -41,8 +41,8 @@ fire_magic = Weapon(
     weapon_type=WeaponType.MAGIC,
     strength=5,
     accuracy=100,
-    uses=25,
-    crit=5,
+    uses=15,
+    crit=0,
     weight=0,
     price=150
 )
@@ -50,10 +50,10 @@ fire_magic = Weapon(
 iron_lance = Weapon(
     name="Iron Lance",
     weapon_type=WeaponType.LANCE,
-    strength=10,
+    strength=6,
     accuracy=90,
-    uses=35,
-    crit=5,
+    uses=15,
+    crit=0,
     weight=6,
     price=110
 )
@@ -61,10 +61,10 @@ iron_lance = Weapon(
 steel_sword = Weapon(
     name="Steel Sword",
     weapon_type=WeaponType.SWORD,
-    strength=12,
-    accuracy=100,
-    uses=35,
-    crit=10,
+    strength=8,
+    accuracy=90,
+    uses=10,
+    crit=5,
     weight=5,
     price=300
 )
@@ -73,9 +73,9 @@ steel_axe = Weapon(
     name="Steel Axe",
     weapon_type=WeaponType.AXE,
     strength=16,
-    accuracy=85,
-    uses=30,
-    crit=10,
+    accuracy=75,
+    uses=10,
+    crit=5,
     weight=7,
     price=320
 )
@@ -83,10 +83,10 @@ steel_axe = Weapon(
 steel_lance = Weapon(
     name="Steel Lance",
     weapon_type=WeaponType.LANCE,
-    strength=14,
-    accuracy=90,
-    uses=30,
-    crit=10,
+    strength=12,
+    accuracy=85,
+    uses=10,
+    crit=5,
     weight=6,
     price=310
 )
@@ -94,9 +94,9 @@ steel_lance = Weapon(
 steel_bow = Weapon(
     name="Steel Bow",
     weapon_type=WeaponType.BOW,
-    strength=11,
+    strength=6,
     accuracy=115,
-    uses=25,
+    uses=15,
     crit=10,
     weight=4,
     price=290
@@ -107,7 +107,7 @@ thunder = Weapon(
     weapon_type=WeaponType.MAGIC,
     strength=8,
     accuracy=100,
-    uses=20,
+    uses=10,
     crit=5,
     weight=0,
     price=350
@@ -116,10 +116,10 @@ thunder = Weapon(
 silver_sword = Weapon(
     name="Silver Sword",
     weapon_type=WeaponType.SWORD,
-    strength=18,
+    strength=12,
     accuracy=100,
-    uses=30,
-    crit=15,
+    uses=5,
+    crit=0,
     weight=6,
     price=600
 )
@@ -127,10 +127,10 @@ silver_sword = Weapon(
 silver_axe = Weapon(
     name="Silver Axe",
     weapon_type=WeaponType.AXE,
-    strength=22,
+    strength=24,
     accuracy=85,
-    uses=25,
-    crit=15,
+    uses=5,
+    crit=0,
     weight=8,
     price=650
 )
@@ -138,10 +138,10 @@ silver_axe = Weapon(
 silver_lance = Weapon(
     name="Silver Lance",
     weapon_type=WeaponType.LANCE,
-    strength=20,
+    strength=18,
     accuracy=90,
-    uses=25,
-    crit=15,
+    uses=5,
+    crit=0,
     weight=7,
     price=620
 )
@@ -149,9 +149,9 @@ silver_lance = Weapon(
 silver_bow = Weapon(
     name="Silver Bow",
     weapon_type=WeaponType.BOW,
-    strength=16,
-    accuracy=115,
-    uses=20,
+    strength=9,
+    accuracy=120,
+    uses=5,
     crit=15,
     weight=5,
     price=610
@@ -163,7 +163,7 @@ dire_thunder = Weapon(
     strength=15,
     accuracy=95,
     uses=5,
-    crit=15,
+    crit=0,
     weight=8,
     price=700
 )
@@ -189,7 +189,14 @@ WEAPONS = { "Iron Sword": iron_sword,
 CLASS_WEAPON_MAP = {
     UnitClass.FIGHTER: [WeaponType.BOW, WeaponType.AXE],
     UnitClass.MERCENARY: [WeaponType.SWORD, WeaponType.AXE],
-    UnitClass.MAGE: [WeaponType.MAGIC]
+    UnitClass.MAGE: [WeaponType.MAGIC],
+    UnitClass.KNIGHT: [WeaponType.SWORD, WeaponType.LANCE],
+    UnitClass.SWORDMASTER: [WeaponType.SWORD],
+    UnitClass.BERSERKER: [WeaponType.AXE],
+    UnitClass.THIEF: [WeaponType.SWORD, WeaponType.MAGIC],
+    UnitClass.SOLIDER: [WeaponType.LANCE],
+    UnitClass.ARCHER: [WeaponType.BOW],
+    UnitClass.PALADIN: [WeaponType.SWORD, WeaponType.AXE, WeaponType.LANCE]
 }
 
 WEAK_WEAPONS = [

@@ -14,7 +14,10 @@ class ArenaActionService:
 
         while True:
 
-            choice = input(">> Choose an option (1-4): ")
+            choice = input(">> Choose an option (1-4): ").strip().lower()
+
+            if self.root_service.information_service.check_information_service_call(choice):
+                continue
 
             if choice not in ("1", "2", "3", "4"):
                 print("Invalid choice. Please enter 1, 2, 3 or 4.")
@@ -52,7 +55,10 @@ class ArenaActionService:
     def make_fight_menu_choice(self):
         while True:
 
-            choice = input(">> Choose an option (1-3): ")
+            choice = input(">> Choose an option (1-3): ").strip().lower()
+
+            if self.root_service.information_service.check_information_service_call(choice):
+                continue
 
             if choice not in ("1", "2", "3"):
                 print("Invalid choice. Please enter 1, 2, or 3.")
@@ -76,7 +82,10 @@ class ArenaActionService:
 
     def choose_weapon_to_equip(self):
         while True:
-            choice = input(">> Choose an option: ")
+            choice = input(">> Choose an option: ").strip().lower()
+
+            if self.root_service.information_service.check_information_service_call(choice):
+                continue
 
             if not choice.isdigit():
                 print("Invalid input. Please enter a number.")
@@ -109,6 +118,9 @@ class ArenaActionService:
 
         while True:
             choice = input(">> Command: ").strip().lower()
+
+            if self.root_service.information_service.check_information_service_call(choice):
+                continue
 
             parts = choice.split()
 
