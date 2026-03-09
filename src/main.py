@@ -1,4 +1,4 @@
-from scr.rpg_arena.service.root_service import RootService
+from src.rpg_arena.service.root_service import RootService
 
 def main():
     root_service = RootService()

@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="uv (rpg-arena) (2)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="uv (rpg-arena) (2)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="uv (rpg_arena)" project-jdk-type="Python SDK" />
 </project>
