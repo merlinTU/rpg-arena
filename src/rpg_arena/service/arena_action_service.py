@@ -42,6 +42,7 @@ class ArenaActionService:
 
             if choice not in ("1", "2", "3", "4"):
                 print("Invalid choice. Please enter 1, 2, 3 or 4.")
+                continue
             choice = int(choice)
 
             if choice == 1:
@@ -89,6 +90,7 @@ class ArenaActionService:
 
             if choice not in ("1", "2", "3"):
                 print("Invalid choice. Please enter 1, 2, or 3.")
+                continue
             choice = int(choice)
 
             match choice:
@@ -119,6 +121,7 @@ class ArenaActionService:
 
             if not choice.isdigit():
                 print("Invalid input. Please enter a number.")
+                continue
             choice = int(choice)
 
             if choice < 1 or choice > len(self.root_service.current_game.player.items):
@@ -190,14 +193,14 @@ class ArenaActionService:
 
             match command:
                 case "equip":
-                    weapon = player.items[number - 1]
+                    weapon = player.items[number]
                     if not isinstance(weapon, Weapon):
                         print("You can't equip this item.")
                         continue
                     player.equipped_weapon = player.items[number - 1]
                     print(player.name, "equipped,", weapon.name)
                     self.open_inventory()
-                    break
+                    return
 
                 case "use":
                     item = player.items[number]

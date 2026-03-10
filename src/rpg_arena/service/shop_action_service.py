@@ -31,6 +31,7 @@ class ShopActionService:
 
             if choice == "exit" or choice == "e":
                 self.root_service.camp_service.open_camp()
+                break
 
             if not choice.isdigit():
                 print("Invalid input. Please enter a number.")

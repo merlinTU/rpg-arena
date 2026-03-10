@@ -45,6 +45,8 @@ class ShopService:
         Returns:
             None
         """
+        self.shop_items = []
+
         player_weapons = self.root_service.current_game.player_weapons
         self.generate_shop_weapons(player_weapons)
         self.generate_shop_items()
@@ -145,7 +147,7 @@ class ShopService:
         game = self.root_service.current_game
         player = game.player
 
-        if number > len(player.items):
+        if number > len(player.items) or len(player.items) == 0:
             number -= len(player.items)
             item = game.convoy.pop(number)
         else:
