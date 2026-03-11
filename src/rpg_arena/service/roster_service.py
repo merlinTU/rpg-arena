@@ -1,4 +1,5 @@
 import random
+import numpy as np
 from rpg_arena.entity.unit_class import UnitClass
 from rpg_arena.entity.fighter import Fighter
 from rpg_arena.service.data.final_boss_data import BOSS_DATA
@@ -58,7 +59,7 @@ class RosterService:
         unit.defense += self.generate_unit_stat_value(type_)
         unit.res += self.generate_unit_stat_value(type_)
 
-        unit.hp_growth += self.generate_unit_growth_value(type_)
+        unit.hp_growth += self.generate_unit_growth_value(type_) + 0.3
         unit.strength_growth += self.generate_unit_growth_value(type_)
         unit.magic_growth += self.generate_unit_growth_value(type_)
         unit.skill_growth += self.generate_unit_growth_value(type_)
@@ -80,21 +81,24 @@ class RosterService:
             float: Growth rate between 0.0 and 1.0.
         """
         match type_:
+            # player unit and normal enemy
             case 1:
                 range_ = range(1, 11)
                 center = 0.25
+            # weak enemy
             case 2:
                 range_ = range(0, 6)
                 center = 0.15
+            # strong enemy
             case 3:
-                range_ = range(5, 15)
+                range_ = range(5, 12)
                 center = 0.35
             case _:
                 range_ = range(1, 11)
                 center = 0.25
 
         possible_growths = [i * 0.05 for i in range_]
-        weights = [1 / (1 + abs(value - center) * len(range_)) for value in possible_growths]
+        weights = [np.exp(-abs(value - center) / 1.7) for value in possible_growths]
         return random.choices(possible_growths, weights=weights, k=1)[0]
 
     def generate_unit_stat_value(self, type_: int) -> int:
@@ -108,20 +112,24 @@ class RosterService:
             int: Base stat value.
         """
         match type_:
+            # player unit or normal enemy
             case 1:
-                possible_values = list(range(0, 16))
+                possible_values = list(range(3, 7))
                 center = 5
+            # weak enemy
             case 2:
-                possible_values = list(range(0, 11))
+                possible_values = list(range(1, 7))
                 center = 3
+            # strong enemy
             case 3:
-                possible_values = list(range(5, 16))
-                center = 8
+                possible_values = list(range(5, 9))
+                center = 6
             case _:
-                possible_values = list(range(0, 16))
+                possible_values = list(range(3, 7))
                 center = 5
 
-        weights = [1 / (1 + abs(value - center)) for value in possible_values]
+        # try to use exp distribution to make more balance; more extreme stats should be less likely
+        weights = [np.exp(-abs(value - center) / 1.7) for value in possible_values]
         return random.choices(possible_values, weights=weights, k=1)[0]
 
     def generate_random_unit(self, type_: int) -> "Fighter":
@@ -146,7 +154,7 @@ class RosterService:
         new_fighter.equipped_weapon = random_weapon
         return new_fighter
 
-    def random_weapon(self, unit_class: "UnitClass", type_: int) -> "Weapon":
+    def random_weapon(self, unit_class: "UnitClass", type_: int):
         """
         Generate a random weapon for a unit based on class and type.
 
@@ -162,18 +170,30 @@ class RosterService:
         possible_weapons = [w for w in WEAPONS.values() if w.weapon_type in allowed_types]
 
         match type_:
+            # normal unit
             case 1:
-                modificator = round_
+                base_strong = 0.05
+                base_medium = 0.25
+            # weak unit
             case 2:
-                modificator = round_ * 2
+                base_strong = 0
+                base_medium = 0.05
+            # strong enemy
             case 3:
-                modificator = round_ * 0.25
+                base_strong= 0.2
+                base_medium = 0.5
             case _:
-                modificator = round_
+                base_strong = 0.05
+                base_medium = 0.25
 
-        if random.random() < 0.05 * modificator:
+        scale = min(round_ / 20, 1)
+        strong_chance = base_strong + scale * 0.15
+        medium_chance = base_medium + scale * 0.15
+        roll = random.random()
+
+        if roll < strong_chance:
             weapons = [w for w in possible_weapons if w in STRONG_WEAPONS]
-        elif random.random() < 0.25 * modificator:
+        elif roll < strong_chance + medium_chance:
             weapons = [w for w in possible_weapons if w in MEDIUM_WEAPONS]
         else:
             weapons = [w for w in possible_weapons if w in WEAK_WEAPONS]
@@ -244,23 +264,30 @@ class RosterService:
         round_ = self.root_service.current_game.round
 
         match strength:
+            # easy enemy
             case 0:
-                level = round_ - 1 if round_ > 1 else round_
-                unit.level_enemy(level)
-                base_gold = round_ * 100
+                level = max(1, round_ - 1)
+                if round_ > 1:
+                    unit.level_enemy(level)
+                # scale gold slowly
+                base_gold = 50 + round_ * 20
                 unit.gold = max(50, int(base_gold + random.normalvariate(0, base_gold * 0.1)))
                 unit.exp = 50
+
+            # medium enemy
             case 1:
-                level = round(random.uniform(round_, round_ + 2))
+                level = max(1, round_ + random.randint(-1, 1))
                 unit.level_enemy(level)
-                base_gold = round_ * 250
-                unit.gold = max(250, int(base_gold + random.normalvariate(0, base_gold * 0.05)))
+                base_gold = 100 + round_ * 50
+                unit.gold = max(100, int(base_gold + random.normalvariate(0, base_gold * 0.05)))
                 unit.exp = 100
+
+            # strong enemy
             case 2:
-                level = round(random.uniform(round_ + 2, round_ + 4))
+                level = max(1, round_ + random.randint(0, 3))
                 unit.level_enemy(level)
-                base_gold = round_ * 500
-                unit.gold = max(500, int(base_gold + random.normalvariate(0, base_gold * 0.1)))
+                base_gold = 200 + round_ * 80
+                unit.gold = max(200, int(base_gold + random.normalvariate(0, base_gold * 0.1)))
                 unit.exp = 150
 
     def generate_boss_unit(self):
