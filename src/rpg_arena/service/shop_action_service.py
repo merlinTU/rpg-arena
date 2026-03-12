@@ -46,6 +46,9 @@ class ShopActionService:
                     self.root_service.shop_service.open_sell_items_menu()
                     break
                 case 3:
+                    self.root_service.shop_service.open_buy_skills_menu()
+                    break
+                case 4:
                     self.root_service.camp_service.open_camp()
                     break
                 case _:
@@ -177,3 +180,57 @@ class ShopActionService:
 
                 case _:
                     print("Unknown command. Use sell or exit.")
+
+
+
+    def make_buy_skills_decision(self):
+        """
+        Handle player input for buying skills from the shop.
+
+        Returns:
+            None
+        """
+        game = self.root_service.current_game
+        player = game.player
+        skills = self.root_service.shop_service.shop_skills
+
+        while True:
+            choice = input(">> Command: ").strip().lower()
+
+            if self.root_service.information_service.check_information_service_call(choice):
+                continue
+
+            parts = choice.split()
+
+            if choice == "exit" or choice == "e":
+                self.root_service.shop_service.open_shop()
+                break
+
+            if len(parts) != 2:
+                print("Invalid command. Use: buy <no> or exit")
+                continue
+
+            command, number = parts
+
+            if not number.isdigit():
+                print("Invalid item number.")
+                continue
+
+            number = int(number)
+
+            if number > len(skills):
+                print("Invalid item number.")
+                continue
+
+            match command:
+                case "buy":
+                    skill = skills[number - 1]
+                    if skill.price > player.gold:
+                        print("You do not have enough gold!")
+                        continue
+
+                    self.root_service.shop_service.buy_skill(skill)
+                    return
+
+                case _:
+                    print("Unknown command. Use: buy or exit.")

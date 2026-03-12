@@ -14,6 +14,51 @@ iron_sword = Weapon(
     price=100
 )
 
+master_sword = Weapon(
+    name="Iron Sword",
+    weapon_type=WeaponType.SWORD,
+    strength=6,
+    accuracy=100,
+    uses=10,
+    crit=30,
+    weight=8,
+    price=500
+)
+
+master_lance = Weapon(
+    name="Master Lance",
+    weapon_type=WeaponType.LANCE,
+    strength=9,
+    accuracy=90,
+    uses=10,
+    crit=25,
+    weight=10,
+    price=500
+)
+
+master_bow = Weapon(
+    name="Master Bow",
+    weapon_type=WeaponType.BOW,
+    strength=5,
+    accuracy=100,
+    uses=10,
+    crit=35,
+    weight=10,
+    price=500
+)
+
+
+master_axe = Weapon(
+    name="Master Bow",
+    weapon_type=WeaponType.AXE,
+    strength=10,
+    accuracy=80,
+    uses=10,
+    crit=20,
+    weight=14,
+    price=500
+)
+
 iron_axe = Weapon(
     name="Iron Axe",
     weapon_type=WeaponType.AXE,
@@ -220,5 +265,9 @@ STRONG_WEAPONS = [
     silver_axe,
     silver_lance,
     silver_bow,
-    dire_thunder
+    dire_thunder,
+    master_axe,
+    master_bow,
+    master_lance,
+    master_sword
 ]

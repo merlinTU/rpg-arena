@@ -1,6 +1,10 @@
 import time
 from rpg_arena.entity.healing_potion import HealingPotion
+from rpg_arena.entity.prob_skill import ProbSkill
 from rpg_arena.entity.stat_booster import StatBooster
+from rpg_arena.entity.stat_modifier_skill import StatModifierSkill
+from rpg_arena.entity.weapon_skill import WeaponSkill
+
 
 class ShopServicePrinter:
     """
@@ -27,7 +31,8 @@ class ShopServicePrinter:
         print("What do you want to do?")
         print("1) Buy Items")
         print("2) Sell Items")
-        print("3) Exit")
+        print("3) Buy Skills")
+        print("4) Exit")
         print("========================================\n")
 
     def print_at_open_buy_items_menu(self, items):
@@ -121,4 +126,53 @@ class ShopServicePrinter:
 
         print("========================================")
         print("Write the number of the item you want to send to the convoy")
+        print("========================================\n")
+
+    def print_at_open_buy_skills_menu(self, skills):
+        """
+        Prints all skills available to buy in a fixed layout with descriptions,
+        categorized by type (StatModifierSkill / ProbSkill).
+
+        Args:
+            skills (list): List of skills available in the shop.
+        """
+        player = self.root_service.current_game.player
+
+        print(f"You have {player.gold} Gold\n")
+
+        index = 1
+        first_stat = True
+        first_proc = True
+        first_weapon = True
+
+        for skill in skills:
+            if first_stat and isinstance(skill, StatModifierSkill):
+                print("\n--- Combat Stat Skills ---\n")
+                first_stat = False
+                time.sleep(0.5)
+
+            if first_proc and isinstance(skill, ProbSkill):
+                print("\n--- Probability Skills ---\n")
+                first_proc = False
+                time.sleep(0.5)
+
+            if first_weapon and isinstance(skill, WeaponSkill):
+                print("\n--- Weapon Skills ---\n")
+                first_weapon = False
+                time.sleep(0.5)
+
+            print(skill.__str__(index))
+            index += 1
+
+        print("\n========================================")
+        self.print_buy_skills_decision()
+
+    def print_buy_skills_decision(self):
+        """
+        Prints guidance for player actions in the buy items menu.
+        """
+        print("========================================")
+        print("What do you want to do?")
+        print("buy <no>    - Buy skill")
+        print("exit        - Leave shop")
         print("========================================\n")

@@ -363,3 +363,14 @@ class ArneaServicePrinter:
         time.sleep(1)
         print(f"You gained 0 EXP.")
         time.sleep(1)
+
+    def print_after_prob_skill(self, unit, skill_name):
+        """
+        Prints that a unit has activated a ProbSkill.
+
+        :param unit: The unit/player activating the skill
+        :param skill_name: Name of the skill being activated
+        """
+        # Assuming the unit has a 'name' attribute
+        print(f"> {unit.name} activates {skill_name}!")
+        time.sleep(1)

@@ -1,3 +1,6 @@
+from distutils.command.check import check
+
+from .stat_modifier_skill import StatModifierSkill
 from .unit_class import UnitClass
 import random
 
@@ -79,9 +82,10 @@ class Fighter:
         self.res_growth = stats.growth_res
 
         self.equipped_weapon = None
-        self.gold = 0
+        self.gold = 99999
         self.exp = 0
         self.items = []
+        self.skills = []
 
     def level_enemy(self, level: int):
         """
@@ -97,16 +101,16 @@ class Fighter:
         Returns:
             None
         """
-        for _ in range(level):
-            self.level += 1
-            self.hp += self.hp_growth
-            self.strength += self.strength_growth
-            self.magic += self.magic_growth
-            self.skill += self.skill_growth
-            self.speed += self.speed_growth
-            self.luck += self.luck_growth
-            self.defense += self.defense_growth
-            self.res += self.res_growth
+        level -= 1
+        self.level += 1 * level
+        self.hp += self.hp_growth * level
+        self.strength += self.strength_growth * level
+        self.magic += self.magic_growth * level
+        self.skill += self.skill_growth * level
+        self.speed += self.speed_growth * level
+        self.luck += self.luck_growth * level
+        self.defense += self.defense_growth * level
+        self.res += self.res_growth *level
 
         self.hp = int(self.hp)
         self.max_hp = self.hp
@@ -164,7 +168,9 @@ class Fighter:
             float: The calculated hit value.
         """
         weapon_hit = self.equipped_weapon.accuracy
-        return weapon_hit + self.skill * 2 + self.luck * 0.5
+        weapon_hit + self.skill * 2 + self.luck * 0.5
+
+        return self.check_combat_skills(weapon_hit, "hit")
 
     def calc_avoid(self):
         """
@@ -175,7 +181,8 @@ class Fighter:
         Returns:
             float: The calculated avoid value.
         """
-        return self.calc_corrected_speed() * 2 + self.luck
+        avoid = self.calc_corrected_speed() * 2 + self.luck
+        return self.check_combat_skills(avoid, "avoid")
 
     def calc_crit(self):
         """
@@ -187,7 +194,9 @@ class Fighter:
             float: The calculated critical hit value.
         """
         weapon_crit = self.equipped_weapon.crit
-        return weapon_crit + self.skill * 0.5
+        weapon_crit += self.skill * 0.5
+
+        return self.check_combat_skills(weapon_crit, "crt")
 
     def calc_crit_avoid(self):
         """
@@ -196,7 +205,8 @@ class Fighter:
         Returns:
             int | float: The critical avoidance value based on luck.
         """
-        return self.luck
+        crt_avoid = self.check_combat_skills(self.luck, "crt_avoid")
+        return crt_avoid
 
     def calc_corrected_speed(self):
         """
@@ -210,6 +220,14 @@ class Fighter:
         """
         if self.equipped_weapon is None:
             return self.speed
-        cor_speed = self.speed - max(0, self.equipped_weapon.weight - self.strength)
+        weapon_weight = self.check_combat_skills(self.equipped_weapon.weight, "weight")
+        cor_speed = self.speed - max(0, weapon_weight - self.strength)
 
         return cor_speed
+
+    def check_combat_skills(self, value_to_modify, value_type):
+        for skill in self.skills:
+            if isinstance(skill, StatModifierSkill):
+                value_to_modify = skill.modify_target(value_to_modify, value_type)
+
+        return value_to_modify

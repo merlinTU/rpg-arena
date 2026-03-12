@@ -1,5 +1,6 @@
 import time
 
+from rpg_arena.entity.prob_skill import ProbSkill
 from rpg_arena.entity.weapon_type import WeaponType
 from rpg_arena.log.arena_service_printer import ArneaServicePrinter
 from rpg_arena.service.arena_action_service import ArenaActionService
@@ -205,7 +206,7 @@ class ArenaService:
             None
         """
         hit_chance = self.caluclate_hit_chance(attacker, defender)
-        damage = self.calculate_damage(attacker, defender)
+        damage = self.calculate_damage_with_skill(attacker, defender)
         rand_no = random.random()
         has_hit = rand_no < hit_chance
 
@@ -265,20 +266,91 @@ class ArenaService:
 
     def calculate_damage(self, attacker: "Fighter", defender: "Fighter"):
         """
-        Calculate the damage dealt from attacker to defender, considering weapon type.
-
-        Args:
-            attacker (Fighter): The attacking unit.
-            defender (Fighter): The defending unit.
-
-        Returns:
-            int: Damage to apply to the defender's HP.
+        Calculate the damage dealt from attacker to defender, considering weapon type. Without skills.
+            Args:
+                attacker (Fighter): The attacking unit.
+                defender (Fighter): The defending unit.
+            Returns:
+                int: Damage to apply to the defender's HP.
         """
         weapon = attacker.equipped_weapon
+
         if weapon.weapon_type == WeaponType.MAGIC:
             return max(0, weapon.strength + attacker.magic - defender.res)
         else:
             return max(0, weapon.strength + attacker.strength - defender.defense)
+
+    def calculate_damage_with_skill(self, attacker: "Fighter", defender: "Fighter"):
+        """
+            Calculate the final damage dealt from the attacker to the defender, taking the skills into account.
+            Args:
+                attacker (Fighter): The unit performing the attack. Skills of this unit may increase
+                                     attack or modify defender stats.
+                defender (Fighter): The unit being attacked. Skills of this unit may reduce incoming damage.
+
+            Returns:
+                int: The calculated damage to apply to the defender's HP. Ensures damage is at least 0.
+            """
+        weapon = attacker.equipped_weapon
+
+        # base values, that are modified by the skills
+        attacker_attack = weapon.strength + attacker.strength
+        attacker_magic = weapon.strength + attacker.magic
+        defender_def = defender.defense
+        defender_res = defender.res
+
+        # first check attacker skills
+        for skill in attacker.skills:
+            if not isinstance(skill, ProbSkill):
+                continue
+
+            # boost attack values
+            if weapon.weapon_type == WeaponType.MAGIC:
+                new_attacker_magic = skill.activate(attacker_magic, "magic", "attack", attacker)
+                if new_attacker_magic != attacker_magic:
+                    self.printer.print_after_prob_skill(attacker, skill.name)
+                attacker_magic = new_attacker_magic
+
+            else:
+                new_attacker_attack = skill.activate(attacker_attack, "str", "attacker", attacker)
+                if new_attacker_attack != attacker_attack:
+                    self.printer.print_after_prob_skill(defender, skill.name)
+                attacker_attack = new_attacker_attack
+
+            # attacker changes enemy defense stats
+            if weapon.weapon_type == WeaponType.MAGIC:
+                defender_res = skill.activate(defender_res, "res", "attacker", defender)
+                if defender_res != defender.res:
+                    self.printer.print_after_prob_skill(attacker, skill.name)
+            else:
+                defender_def = skill.activate(defender_def, "def", "attacker", defender)
+                if defender_def != defender.defense:
+                    self.printer.print_after_prob_skill(attacker, skill.name)
+
+        # skills of the defender
+        for skill in defender.skills:
+            if not isinstance(skill, ProbSkill):
+                continue
+
+            # reduce attack value of the attacker
+            if weapon.weapon_type == WeaponType.MAGIC:
+                new_attacker_magic = skill.activate(attacker_magic, "magic", "defender", attacker)
+                if new_attacker_magic != attacker_magic:
+                    self.printer.print_after_prob_skill(attacker, skill.name)
+                attacker_magic = new_attacker_magic
+            else:
+                new_attacker_attack = skill.activate(attacker_attack, "str", "defender", attacker)
+                if new_attacker_attack != attacker_attack:
+                    self.printer.print_after_prob_skill(attacker, skill.name)
+                attacker_attack = new_attacker_attack
+
+        # calculate damage
+        if weapon.weapon_type == WeaponType.MAGIC:
+            damage = attacker_magic - defender_res
+        else:
+            damage = attacker_attack - defender_def
+
+        return max(0, int(damage))
 
     def check_weapon_vantage(self, attacker_weapon, defender_weapon):
         """

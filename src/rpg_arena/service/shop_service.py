@@ -1,7 +1,11 @@
+import time
 
 from rpg_arena.entity.healing_potion import HealingPotion
 from rpg_arena.entity.stat_booster import StatBooster
+from rpg_arena.entity.weapon_skill import WeaponSkill
 from rpg_arena.log.shop_service_printer import ShopServicePrinter
+from rpg_arena.service.data.prob_skill_data import PROB_SKILLS, SKILLS
+from rpg_arena.service.data.stat_modifer_data import STAT_MODIFIERS
 from rpg_arena.service.shop_action_service import ShopActionService
 from rpg_arena.service.data.item_data import ITEMS
 from rpg_arena.service.data.weapon_data import WEAPONS
@@ -37,6 +41,7 @@ class ShopService:
         self.printer = ShopServicePrinter(root_service)
         self.action_service = ShopActionService(root_service)
         self.shop_items = []
+        self.shop_skills =  SKILLS
 
     def open_shop(self):
         """
@@ -83,6 +88,18 @@ class ShopService:
 
         self.printer.print_at_open_sell_items_menu()
         self.action_service.make_sell_items_decision()
+
+    def open_buy_skills_menu(self):
+        player_skills = self.root_service.current_game.player.skills
+        # filter out skills the player already has
+        self.shop_skills = [
+            skill for skill in self.shop_skills
+            if skill.name not in {ps.name for ps in player_skills}
+        ]
+        self.filter_weapon_skills_for_player()
+
+        self.printer.print_at_open_buy_skills_menu(self.shop_skills)
+        self.action_service.make_buy_skills_decision()
 
     def generate_shop_weapons(self, player_weapons):
         """
@@ -165,3 +182,39 @@ class ShopService:
         print("You have", player.gold, "gold now.")
 
         self.open_sell_items_menu()
+
+    def buy_skill(self, skill):
+        player = self.root_service.current_game.player
+        game = self.root_service.current_game
+        self.shop_skills.remove(skill)
+
+        # for the skills it should not matter that this not a deep copy
+        player.skills.append(skill)
+
+        # if weapon skill, player weapons must be updated
+        if isinstance(skill, WeaponSkill):
+            game.player_weapons.append(skill.weapon_type)
+
+
+        player.gold -= skill.price
+        print(player.name, "bought", skill.name)
+        print("You have", player.gold, "gold left")
+        time.sleep(1)
+
+        self.open_buy_skills_menu()
+
+    def filter_weapon_skills_for_player(self):
+        """
+        Removes WeaponSkills from the shop that the player already owns.
+
+        Only WeaponSkill instances are checked; other skills remain unchanged.
+        """
+        player_weapon_types = self.root_service.current_game.player_weapons
+
+        # Filter Shop WeaponSkills
+        self.shop_skills = [
+            skill for skill in self.shop_skills
+            if not isinstance(skill, WeaponSkill) or skill.weapon_type not in player_weapon_types
+        ]
+
+

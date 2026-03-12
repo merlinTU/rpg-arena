@@ -138,6 +138,11 @@ class GameServicePrinter():
         items_line = "Items:   " + ", ".join(item_names) if item_names else "Items: None"
         print(items_line)
 
+        # skills
+        skill_names = [skill.name for skill in unit.skills] if unit.skills else []
+        skills_line = "Skills:  " + ", ".join(skill_names) if skill_names else "Skills: None"
+        print(skills_line)
+
         time.sleep(1)
         print("========================================")
 
